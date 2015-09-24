@@ -7,75 +7,54 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 public class RequestManager
 {
-  private static ThreadSafeClientConnManager cm;
+  private static HttpClientBuilder httpClientBuilder;
   private static RequestManager rm;
-  private static HttpContext context;
-  private static HttpClient httpClient;
-  private static HttpParams httpParams;
-  private static CookieStore cookieStore;
+  private static CloseableHttpClient httpClient;
+  private static RequestConfig requestConfig;
   private static ManagerConfig managerConfig;
   private static Log logger;
 
-  private RequestManager()
-  {
-    if (cm == null) {
-      cm = new ThreadSafeClientConnManager();
+	private RequestManager() {
+		if (httpClientBuilder == null) {
+			httpClientBuilder = HttpClientBuilder.create();
 
-      cm.setMaxTotal(2000);
+			managerConfig = ManagerConfig.build();
+			httpClientBuilder.setMaxConnTotal(managerConfig.getConnection());
+			httpClientBuilder.setMaxConnPerRoute(managerConfig.getPreroute());
 
-      cm.setDefaultMaxPerRoute(1000);
-
-      cookieStore = new BasicCookieStore();
-
-      context = new BasicHttpContext();
-      context.setAttribute("http.cookie-store", cookieStore);
-
-      httpParams = new BasicHttpParams();
-      httpParams.setParameter("http.socket.timeout", 
-        Integer.valueOf(6000)).setParameter(
-        "http.connection.timeout", 
-        Integer.valueOf(10000));
-
-      httpClient = new DefaultHttpClient(cm, httpParams);
-
-      logger = LogFactory.getLog(RequestManager.class);
-    }
-  }
+			requestConfig = RequestConfig.custom()
+					.setCookieSpec(CookieSpecs.BEST_MATCH)
+					.setSocketTimeout(managerConfig.getSocketTimeout())
+					.setConnectTimeout(managerConfig.getConnectionTimout())
+					.build();// 设置请求和传输超时时间
+			httpClientBuilder.setDefaultRequestConfig(requestConfig);
+			httpClient = httpClientBuilder.build();
+			logger = LogFactory.getLog(RequestManager.class);
+		}
+	}
 
   public void config(ManagerConfig config)
   {
     if (config == null) {
-      return;
+    	return;
     }
 
     managerConfig = config;
-
-    cm.setMaxTotal(config.getConnection());
-
-    cm.setDefaultMaxPerRoute(config.getPreroute());
-
-    httpParams.setParameter("http.socket.timeout", 
-      Integer.valueOf(managerConfig.getSocketTimeout())).setParameter(
-      "http.connection.timeout", 
-      Integer.valueOf(managerConfig.getConnectionTimout()));
-
-    httpClient = new DefaultHttpClient(cm, httpParams);
+    httpClientBuilder.setMaxConnTotal(config.getConnection());
+    httpClientBuilder.setMaxConnPerRoute(config.getPreroute());
+    httpClient = httpClientBuilder.build();
+  
   }
 
   public static RequestManager getInstance()
@@ -97,28 +76,25 @@ public class RequestManager
     {
       if (reqObj.getRequestType() == RequestType.GET) {
         HttpGet httpGet = new HttpGet(url);
-        response = httpClient.execute(httpGet, context);
+        response = httpClient.execute(httpGet);
       }
       else if (reqObj.getRequestType() == RequestType.POST) {
         HttpPost httpPost = new HttpPost(url);
-
         httpPost.setEntity(reqObj.buildRequestEntity());
 
-        response = httpClient.execute(httpPost, context);
+        response = httpClient.execute(httpPost);
       }
       else if (reqObj.getRequestType() == RequestType.PUT) {
         HttpPost httpPut = new HttpPost(url);
-
         reqObj.putParam("_method", RequestType.PUT.toString());
         httpPut.setEntity(reqObj.buildRequestEntity());
 
-        response = httpClient.execute(httpPut, context);
+        response = httpClient.execute(httpPut);
       }
       else if (reqObj.getRequestType() == RequestType.DELETE) {
         HttpDelete httpDelete = new HttpDelete(url);
-
         reqObj.putParam("_method", RequestType.DELETE.toString());
-        response = httpClient.execute(httpDelete, context);
+        response = httpClient.execute(httpDelete);
       }
     }
     catch (ClientProtocolException e) {

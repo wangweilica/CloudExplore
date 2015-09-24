@@ -13,11 +13,12 @@ public class ManagerConfig
   private int preroute;
   private int connectionTimout;
   private int socketTimeout;
-
-  public static ManagerConfig build(String configPath)
+  private static String configPath = "config";
+  public static ManagerConfig build()
   {
     try
     {
+    	// Thread.currentThread().getContextClassLoader().getResource("").getPath()
       configBundle = ResourceBundle.getBundle(configPath);
     } catch (Exception e) {
       return null;
