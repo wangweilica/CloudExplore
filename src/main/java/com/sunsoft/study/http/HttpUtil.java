@@ -16,7 +16,7 @@ public class HttpUtil {
 	
 	public static JSONObject  send(){
 		
-		RequestObject obj = init("112.33.1.160",81,"/healthcare_service_restful/s/userService/getUserByUid");
+		RequestObject obj = init("http://112.33.1.160:81/healthcare_service_restful/s/userService/getUserByUid");
 		
 		HttpResponse response = RequestManager.getInstance().sendRequest(obj);
 		String responseMsg = RequestManager.parseResponse(response);
@@ -32,18 +32,14 @@ public class HttpUtil {
 	  * @param vo
 	  * @return
 	  */
-	private static RequestObject init(String host, int port, String path) {
+	private static RequestObject init(String path) {
 		RequestObject obj = new RequestObject();
 		obj.setRequestType(RequestType.POST);
 
-		obj.setScheme("http");
-		obj.setHost(host);
 		obj.setPath(path);
-		obj.setPort(port);
 		obj.setEncoding(RequestConstants.ENCODING_UTF_8);
 		obj.putParam("invokeKey", "[HAIJK-S]nHtIktPPQM")
-				.putParam("appKey", "HAIJK").putParam("remoteAppKey", "HAIJK")
-				.putParam("uid", "wanggang");
+				.putParam("appKey", "HAIJK").putParam("uid", "wanggang");
 
 		
 		return obj;

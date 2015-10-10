@@ -1,6 +1,5 @@
 package com.sunsoft.study.http;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
@@ -10,147 +9,114 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 
-public class RequestObject
-{
-  private static Log logger;
-  private String scheme;
-  private String host;
-  private ArrayList<NameValuePair> params = new ArrayList<>();
-  private RequestType requestType;
-  private int port;
-  private String path;
-  private String encoding;
-  private RequestEntityType requestEntityType;
+/**
+ * @File: RequestObject.java
+ * @Date: 2015年9月29日
+ * @Author: wwei
+ * @Copyright: 版权所有 (C) 2015
+ *
+ * @注意：本内容仅限于本人使用，禁止外泄以及用于其他的商业目的
+ */
+public class RequestObject {
+	private static Log logger;
 
-  public RequestObject()
-  {
-    if (logger == null) {
-      logger = LogFactory.getLog(RequestObject.class);
-    }
+	// 参数
+	private ArrayList<NameValuePair> params = new ArrayList<>();
 
-    this.encoding = "utf-8";
-  }
+	private String encoding;
 
-  public String toUrl()
-  {
-    StringBuilder builder = new StringBuilder();
-    builder.append(this.scheme).append("://").append(this.host).append(":")
-      .append(this.port);
+	private RequestType requestType;
 
-    if (!this.path.startsWith("/")) {
-      builder.append("/");
-    }
+	private RequestEntityType requestEntityType;
 
-    if (this.path != null) {
-      builder.append(this.path);
-    }
+	// 访问路径
+	private String path;
 
-    if (((this.requestType == RequestType.GET ? 1 : 0) | (
-      this.requestType == RequestType.DELETE ? 1 : 0)) != 0) {
-      builder.append("?");
+	public RequestObject() {
+		if (logger == null) {
+			logger = LogFactory.getLog(RequestObject2.class);
+		}
 
-      int paramSize = this.params.size();
-      if (this.params != null) {
-        for (int i = 0; i < paramSize - 1; i++) {
-          builder.append(((NameValuePair)this.params.get(i)).getName()).append("=")
-            .append(((NameValuePair)this.params.get(i)).getValue()).append("&");
-        }
-        builder.append(((NameValuePair)this.params.get(paramSize - 1)).getName()).append("=")
-          .append(((NameValuePair)this.params.get(paramSize - 1)).getValue());
-      }
+		this.encoding = "utf-8";
+	}
 
-    }
+	public String toUrl() {
+		StringBuilder builder = new StringBuilder();
 
-    return builder.toString();
-  }
+		if (this.path != null) {
+			builder.append(this.path);
+		}
 
-  public RequestObject putParam(String name, String value)
-  {
-    this.params.add(new BasicNameValuePair(name, value));
-    return this;
-  }
+		builder.append("?");
 
-  @Deprecated
-  public UrlEncodedFormEntity buildFormEntity()
-  {
-    UrlEncodedFormEntity entity = null;
-    try
-    {
-      entity = new UrlEncodedFormEntity(this.params, this.encoding);
-    } catch (UnsupportedEncodingException e) {
-      logger.error("Unsupported coding format " + e.toString());
-    }
+		int paramSize = this.params.size();
+		if (this.params != null) {
+			for (int i = 0; i < paramSize - 1; i++) {
+				builder.append(((NameValuePair) this.params.get(i)).getName())
+						.append("=")
+						.append(((NameValuePair) this.params.get(i)).getValue())
+						.append("&");
+			}
+			builder.append(
+					((NameValuePair) this.params.get(paramSize - 1)).getName())
+					.append("=")
+					.append(((NameValuePair) this.params.get(paramSize - 1))
+							.getValue());
+		}
 
-    return entity;
-  }
+		return builder.toString();
+	}
 
-  public HttpEntity buildRequestEntity()
-  {
-    HttpEntity entity = null;
+	public RequestObject putParam(String name, String value) {
+		this.params.add(new BasicNameValuePair(name, value));
+		return this;
+	}
 
-    if (this.requestEntityType == null) {
-      this.requestEntityType = RequestEntityType.URL;
-    }
-    try
-    {
-        entity = new UrlEncodedFormEntity(this.params, this.encoding);
+	public HttpEntity buildRequestEntity() {
+		HttpEntity entity = null;
 
-    }
-    catch (Exception e)
-    {
-      logger.error("Unsupported coding format " + e.toString());
-    }
+		if (this.requestEntityType == null) {
+			this.requestEntityType = RequestEntityType.URL;
+		}
+		try {
+			entity = new UrlEncodedFormEntity(this.params, this.encoding);
 
-    return entity;
-  }
+		} catch (Exception e) {
+			logger.error("Unsupported coding format " + e.toString());
+		}
 
-  public String getScheme()
-  {
-    return this.scheme;
-  }
+		return entity;
+	}
 
-  public void setScheme(String scheme)
-  {
-    this.scheme = scheme;
-  }
+	public String getPath() {
+		return path;
+	}
 
-  public void setHost(String host)
-  {
-    this.host = host;
-  }
+	public void setPath(String path) {
+		this.path = path;
+	}
 
-  public RequestType getRequestType()
-  {
-    return this.requestType;
-  }
+	public String getEncoding() {
+		return encoding;
+	}
 
-  public void setRequestType(RequestType requestType)
-  {
-    this.requestType = requestType;
-  }
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
 
-  public void setPort(int port)
-  {
-    this.port = port;
-  }
+	public RequestType getRequestType() {
+		return requestType;
+	}
 
-  public void setPath(String path)
-  {
-    this.path = path;
-  }
+	public void setRequestType(RequestType requestType) {
+		this.requestType = requestType;
+	}
 
-  public void setEncoding(String encoding)
-  {
-    this.encoding = encoding;
-  }
+	public RequestEntityType getRequestEntityType() {
+		return requestEntityType;
+	}
 
-  public void setRequestEntityType(RequestEntityType requestEntityType)
-  {
-    this.requestEntityType = requestEntityType;
-  }
-
-  public static Log getLogger()
-  {
-    return logger;
-  }
+	public void setRequestEntityType(RequestEntityType requestEntityType) {
+		this.requestEntityType = requestEntityType;
+	}
 }

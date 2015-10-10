@@ -79,13 +79,13 @@ public class RequestManager
         response = httpClient.execute(httpGet);
       }
       else if (reqObj.getRequestType() == RequestType.POST) {
-        HttpPost httpPost = new HttpPost(url);
+        HttpPost httpPost = new HttpPost(reqObj.getPath());
         httpPost.setEntity(reqObj.buildRequestEntity());
 
         response = httpClient.execute(httpPost);
       }
       else if (reqObj.getRequestType() == RequestType.PUT) {
-        HttpPost httpPut = new HttpPost(url);
+        HttpPost httpPut = new HttpPost(reqObj.getPath());
         reqObj.putParam("_method", RequestType.PUT.toString());
         httpPut.setEntity(reqObj.buildRequestEntity());
 
@@ -126,7 +126,7 @@ public class RequestManager
     }
     else
     {
-      logger.error(Integer.valueOf(responseCode));
+      System.out.println(responseCode);
     }
 
     return content;
