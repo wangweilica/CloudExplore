@@ -25,7 +25,6 @@ import org.apache.http.impl.cookie.BestMatchSpecFactory;
 import org.apache.http.impl.cookie.BrowserCompatSpecFactory;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
-import org.junit.Test;
 
 import com.sunsoft.study.http.RequestObject;
 import com.sunsoft.study.http.RequestType;
@@ -48,7 +47,7 @@ public class ImitateLogin {
 	
 	public ImitateLogin() {}
 	
-	public static CloseableHttpClient getInstance() {
+	private static CloseableHttpClient getInstance() {
 		if (httpClient == null) {
 			httpClient = HttpClients.custom()
 					.setDefaultCookieStore(cookieStore).build();
@@ -112,8 +111,6 @@ public class ImitateLogin {
 		  setContext();
 	}
 	
-	
-	 @Test
 	  public void getData() throws Exception {
 		HttpClientLogin();
 		// 使用context方式
