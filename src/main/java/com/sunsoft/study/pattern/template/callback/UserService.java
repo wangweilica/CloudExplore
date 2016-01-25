@@ -50,7 +50,7 @@ public class UserService {
 	 */
 	public boolean insertUser(final String sql) throws SQLException {
 		JdbcTemplate jt = new JdbcTemplate();
-		return jt.insert(new StatementCallback(){// 匿名内部类实现
+		return jt.update(new StatementCallback(){// 匿名内部类实现
 			public Object doInStatement(PreparedStatement stmt, String sql) throws SQLException {
 				return stmt.execute(sql);
 			}
@@ -65,7 +65,7 @@ public class UserService {
 	 */
 	public int[] insertBatchUser(final String sql, final List<User> list) throws SQLException {
 		JdbcTemplate jt = new JdbcTemplate();
-		return jt.insertBatch(new StatementCallback(){// 匿名内部类实现
+		return jt.updateBatch(new StatementCallback(){// 匿名内部类实现
 			public int[] doInStatement(PreparedStatement stmt, String sql) throws SQLException {
 				if (!CollectionUtils.isEmpty(list)) {
 					int i = 0;

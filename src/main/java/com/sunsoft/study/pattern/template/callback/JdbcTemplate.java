@@ -57,14 +57,13 @@ public class JdbcTemplate {
 	    return execute(stmt, sql, openTransation);  
 	}  
 	
-	// 插入
-	public boolean insert(StatementCallback stmt, String sql, boolean openTransation) throws SQLException{  
+	// 更新
+	public boolean update(StatementCallback stmt, String sql, boolean openTransation) throws SQLException{  
 	    return (boolean)execute(stmt, sql, openTransation);  
 	} 
-	
-	// 批量插入
-	public int[] insertBatch(StatementCallback stmt, String sql, boolean openTransation) throws SQLException{  
+		
+	// 批量更新
+	public int[] updateBatch(StatementCallback stmt, String sql, boolean openTransation) throws SQLException{  
 	    return (int[])execute(stmt, sql, openTransation);  
 	} 
-
 }

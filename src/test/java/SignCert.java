@@ -20,18 +20,18 @@ import sun.security.x509.X509CertInfo;
 public class SignCert {
 	
 	// 签发者
-	public static final String clientStore = "D:\\Credential\\client.jks";
+	public static final String clientStore = "g:\\keystool\\client.jks";
 	public static final String clientCertAlias = "client";
 	
 	// 待签发者
-	public static final String serverCert = "D:\\Credential\\server.cer";
+	public static final String serverCert = "g:\\keystool\\server.cer";
 	
 	// 新的密钥库
-	public static final String newServerStore = "D:\\Credential\\newserver.jks";
+	public static final String newServerStore = "g:\\keystool\\newserver.jks";
 	public static final String newServerCertAlias = "signedserver";
 	
 	// 密码
-	public static final String password = "changeit";
+	public static final String password = "111111";
 	
 	public static void main(String[] args) throws Exception{
 		//签发者信息
