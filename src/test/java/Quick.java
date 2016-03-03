@@ -31,8 +31,6 @@ public class Quick {
 			}
 		}
 		System.out.print("l="+(l+1)+"h="+(h+1)+"povit="+povit+"\n");
-		/*if(l > low) sort(arr, low, l-1);
-		if(h < high) sort(arr, h+1, high);;*/
 	}
 	
 	@Test
