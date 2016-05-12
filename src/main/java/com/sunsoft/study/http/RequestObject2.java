@@ -1,7 +1,5 @@
 package com.sunsoft.study.http;
 
-import java.util.ArrayList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -9,12 +7,14 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.util.ArrayList;
+
 public class RequestObject2
 {
   private static Log logger;
   private String scheme;
   private String host;
-  private ArrayList<NameValuePair> params = new ArrayList<>();
+  private ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
   private RequestType requestType;
   private int port;
   private String path;

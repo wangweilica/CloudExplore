@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class ServiceProviderRegistry<T extends Service> {
 	
-	// ×¢²á±í
-    private Map<Class<?>, ServiceProvider<?>> registry = new HashMap<>();
+	// ×¢ï¿½ï¿½ï¿½
+    private Map<Class<?>, ServiceProvider<?>> registry = new HashMap<Class<?>, ServiceProvider<?>>();
     @SuppressWarnings("hiding")
 	public <T extends Service> void register(Class<T> clazz, ServiceProvider<T> provider) {
     	 registry.put(clazz, provider);
@@ -16,7 +16,7 @@ public class ServiceProviderRegistry<T extends Service> {
 	public <T extends Service> ServiceProvider<T> lookup(Class<T> cls) {
 		return (ServiceProvider<T>) registry.get(cls);
 	}
-	// ÓÐÎÊÌâµÄ×¢²á£¨¶ÔÕÕ×é£©
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½á£¨ï¿½ï¿½ï¿½ï¿½ï¿½é£©
 	private Map<Class<T>, ServiceProvider<T>> map = new HashMap<>();
 	public  void register1(Class<T> clazz, ServiceProvider<T> provider) {
 		map.put(clazz, provider);

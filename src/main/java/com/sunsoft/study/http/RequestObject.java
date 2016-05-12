@@ -1,13 +1,13 @@
 package com.sunsoft.study.http;
 
-import java.util.ArrayList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
 
 /**
  * @File: RequestObject.java
@@ -21,7 +21,7 @@ public class RequestObject {
 	private static Log logger;
 
 	// 参数
-	private ArrayList<NameValuePair> params = new ArrayList<>();
+	private ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 
 	private String encoding;
 
