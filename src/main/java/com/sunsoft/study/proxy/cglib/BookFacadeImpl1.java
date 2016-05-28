@@ -2,8 +2,8 @@ package com.sunsoft.study.proxy.cglib;
 
 public class BookFacadeImpl1 {
 
-	public void addBook() {
-		System.out.println("增加图书方法。。。");  
+	public int addBook() {
+		return 1;
 	}
 
 	public void read() {

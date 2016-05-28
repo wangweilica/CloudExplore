@@ -111,6 +111,21 @@
 			<artifactId>javassist</artifactId>
 			<version>3.20.0-GA</version>
 		</dependency>
+		<!-- http://mvnrepository.com/artifact/com.101tec/zkclient -->
+		<!--<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.8</version>
+		</dependency>-->
+		<!-- http://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.8</version>
+		</dependency>
+
+
+
 	</dependencies>
 	<build>
 		<finalName>CloudExplore</finalName>

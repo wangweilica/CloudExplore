@@ -1,10 +1,10 @@
 package com.sunsoft.study.proxy.cglib;
 
-import java.lang.reflect.Method;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+
+import java.lang.reflect.Method;
 
 public class BookFacadeCglib implements MethodInterceptor {
 
@@ -22,6 +22,7 @@ public class BookFacadeCglib implements MethodInterceptor {
 			MethodProxy proxy) throws Throwable {
 		System.out.println("开始");
 		Object result = method.invoke(this.target, args);
+		System.out.println(result);
 		// 两者皆可  result = proxy.invoke(this.target, args);
 		System.out.println("结束");
 		return result;
