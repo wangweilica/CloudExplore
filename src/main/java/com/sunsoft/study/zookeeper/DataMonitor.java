@@ -71,7 +71,7 @@ public class DataMonitor implements Watcher, StatCallback {
             case Expired:
                 // It's all over
                 dead = true;
-                listener.closing(KeeperException.Code.SessionExpired);
+                listener.closing(KeeperException.Code.SESSIONEXPIRED.intValue());
                 break;
             }
         } else {
@@ -88,22 +88,23 @@ public class DataMonitor implements Watcher, StatCallback {
 
     public void processResult(int rc, String path, Object ctx, Stat stat) {
         boolean exists;
-        switch (rc) {
-        case Code.Ok:
-            exists = true;
-            break;
-        case Code.NoNode:
-            exists = false;
-            break;
-        case Code.SessionExpired:
-        case Code.NoAuth:
-            dead = true;
-            listener.closing(rc);
-            return;
-        default:
-            // Retry errors
-            zk.exists(znode, true, this, null);
-            return;
+        Code c = Code.get(rc);
+        switch (c) {
+            case OK:
+                exists = true;
+                break;
+            case NONODE:
+                exists = false;
+                break;
+            case SESSIONEXPIRED:
+            case NOAUTH:
+                dead = true;
+                listener.closing(rc);
+                return;
+            default:
+                // Retry errors
+                zk.exists(znode, true, this, null);
+                return;
         }
 
         byte b[] = null;
@@ -118,7 +119,7 @@ public class DataMonitor implements Watcher, StatCallback {
                 return;
             }
         }
-        if ((b == null && b != prevData)
+        if ((b != null && b != prevData)
                 || (b != null && !Arrays.equals(prevData, b))) {
             listener.exists(b);
             prevData = b;

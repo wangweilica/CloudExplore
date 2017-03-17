@@ -18,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
 public class Zk implements Watcher {
 
     public static final int SESSION_TIMEOUT = 10000;
-    public static final String CONNECTION_STRING = "192.168.1.234:2181";//192.168.1.234:2181,192.168.1.234:2182
+    public static final String CONNECTION_STRING = "192.168.1.49:2181";//192.168.1.234:2181,192.168.1.234:2182
     public static final String USERSERVICE_CONFIG_PATH = "/config";
 
     private ZooKeeper client = null;

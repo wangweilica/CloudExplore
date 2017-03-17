@@ -1,17 +1,10 @@
-package com.sunsoft.study.zookeeper; /**
- * A simple example program to use DataMonitor to start and
- * stop executables based on a znode. The program watches the
- * specified znode and saves the data that corresponds to the
- * znode in the filesystem. It also starts the specified program
- * with the specified arguments when the znode exists and kills
- * the program if the znode goes away.
- */
+package com.sunsoft.study.zookeeper;
+
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,8 +12,6 @@ import java.io.OutputStream;
 public class Executor
     implements Watcher, Runnable, DataMonitor.DataMonitorListener
 {
-    String znode;
-
     DataMonitor dm;
 
     ZooKeeper zk;
@@ -39,9 +30,6 @@ public class Executor
         dm = new DataMonitor(zk, znode, null, this);
     }
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
        /* if (args.length < 4) {
             System.err
@@ -54,7 +42,7 @@ public class Executor
         String exec[] = new String[args.length - 3];
         System.arraycopy(args, 3, exec, 0, exec.length);*/
         try {
-            new Executor("192.168.1.234:2181", "/config", "G:\\1.log", new String[1]).run();
+            new Executor("192.168.1.234:2181", "/config", "G:\\1.log", new String[10]).run();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,6 +65,7 @@ public class Executor
                 }
             }
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -105,19 +94,21 @@ public class Executor
                     os.write(b, 0, rc);
                 }
             } catch (IOException e) {
+                e.printStackTrace();
             }
 
         }
     }
 
     public void exists(byte[] data) {
-        if (data == null) {
-            if (child != null) {
+        /* if (data == null) {
+           if (child != null) {
                 System.out.println("Killing process");
                 child.destroy();
                 try {
                     child.waitFor();
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
             child = null;
@@ -131,7 +122,7 @@ public class Executor
                     e.printStackTrace();
                 }
             }
-            try {
+        /*    try {
                 FileOutputStream fos = new FileOutputStream(filename);
                 fos.write(data);
                 fos.close();
@@ -146,6 +137,6 @@ public class Executor
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }

@@ -10,12 +10,15 @@ public class JunitTest {
 	@Test
 	public void getUser() {
 		try {
-			String sql = "select * from t_user where mobile=15869139334";  
-			JdbcTemplate jt = new JdbcTemplateUserImpl();  
-			List<User> userList = (List<User>) jt.execute(sql);
-			for(User user : userList) {
-				System.out.println(user.getUserName());
-			}
+//			String sql = " SELECT id FROM information_schema.processlist WHERE time>0 AND  user='dbu_haochedai' AND  (host like '10.168.79.203%' OR  host like '10.117.85.8%' OR host like '10.47.132.68%' OR host like '10.168.189.39%' OR host like '10.168.241.55%' OR host like '10.161.141.24%')";
+			String sql = " SELECT id FROM information_schema.processlist WHERE time>0";
+
+			JdbcTemplate jt = new JdbcTemplateUserImpl();
+			jt.execute("kill 671977633");
+			/*List<Integer> userList = (List<Integer>) jt.execute(sql);
+			for(Integer proc : userList) {
+				System.out.println(proc);
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}  

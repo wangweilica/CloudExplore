@@ -10,9 +10,9 @@ import java.sql.Statement;
 public abstract class JdbcTemplate {
 
 	private String driver = "com.mysql.jdbc.Driver";
-	String url = "jdbc:mysql://192.168.11.165/cloudhealth";
-	private String username = "root";
-	private String password = "123456";
+	String url = "jdbc:mysql://rdsb3urqimf3ijno.mysql.rds.aliyuncs.com:3306/haochedai";
+	private String username = "dbu_haochedai";
+	private String password = "HqE4cWfrfUrCxNWY";
 
 	// template method( public can be replace with private )
 	public final Object execute(String sql) throws Exception {
@@ -23,8 +23,9 @@ public abstract class JdbcTemplate {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, username, password);
 			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			result = doInStatement(rs);// abstract method
+//			ResultSet rs = stmt.executeQuery(sql);
+			stmt.execute(sql);
+//			result = doInStatement(rs);// abstract method
 			return result;
 		} catch (Exception ex) {
 			ex.printStackTrace();

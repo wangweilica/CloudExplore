@@ -9,14 +9,15 @@ public class JdbcTemplateUserImpl extends JdbcTemplate {
   
     @Override  
     protected Object doInStatement(ResultSet rs) {  
-        List<User> userList = new ArrayList<User>();  
+        List<Integer> userList = new ArrayList<Integer>();
         try {  
             User user = null;  
             while (rs.next()) {  
-                user = new User();  
-                user.setUserName(rs.getString("user_name"));  
-                user.setPassword(rs.getString("password"));  
-                userList.add(user);  
+//                user = new User();
+//                user.setUserName(rs.getString("user_name"));
+//                user.setPassword(rs.getString("password"));
+
+                userList.add(rs.getInt("id"));
             }  
             return userList;  
         } catch (SQLException e) {  
